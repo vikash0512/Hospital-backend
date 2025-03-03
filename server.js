@@ -1,7 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const path = require('path');
 const connectDB = require('./config/db');
 
 // Load env vars
@@ -36,22 +35,11 @@ app.use(cors(corsOptions));
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/hospitals', hospitalRoutes);
 
-// Serve static assets in production
-if (process.env.NODE_ENV === 'production') {
-  // Set static folder
-  app.use(express.static(path.join(__dirname, '../client/build')));
+// Basic route
+app.get('/', (req, res) => {
+  res.json({ message: 'Welcome to Hospital Management API' });
+});
 
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
-  });
-} else {
-  // Basic route for development
-  app.get('/', (req, res) => {
-    res.json({ message: 'Welcome to Hospital Management API' });
-  });
-}
-
-// Use port 3001 explicitly
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
