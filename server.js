@@ -18,12 +18,11 @@ const app = express();
 // Body parser
 app.use(express.json());
 
-// CORS configuration
+// CORS configuration based on environment
 const corsOptions = {
-  origin: [
-    'http://localhost:3000',
-    'https://your-netlify-app.netlify.app' // Replace with your Netlify domain
-  ],
+  origin: process.env.NODE_ENV === 'production' 
+    ? '*'  // Allow all origins in production
+    : ['http://localhost:3000'], // Only allow localhost in development
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   credentials: true,
   optionsSuccessStatus: 200
